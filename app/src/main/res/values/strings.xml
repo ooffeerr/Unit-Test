@@ -1,0 +1,8 @@
+<resources>
+	<string name="app_name">Calculator</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="action_settings">Settings</string>
+	<string name="best_calculator_ever">Best Calculator EVER!</string>
+	<string name="number_1_placeholder">Enter a number</string>
+	<string name="number_2_placeholder">Enter another number</string>
+</resources>
