@@ -30,7 +30,33 @@ public class ArithmeticsTest  {
 		int result = arithmetics.multiply(TWO, TWO);
 
 		//Assert - where we expect a result. - REMEMBER! IT IS CRUCIAL TO SEE THE TEST FAILS!
-		assertEquals("product value is wrong", 0, result);
+		assertEquals("product value is wrong", FOUR, result);
 	}
 
+	@Test
+	public void testSlowAddTwoPlusTwo_FourIsDelegated() throws Exception {
+		//Arrange
+		IArithmeticsListener listener = Mockito.mock(IArithmeticsListener.class);
+		Arithmetics arithmetics = new Arithmetics(listener, 0);
+
+		// act
+		arithmetics.slow_add(TWO, TWO);
+
+		/*
+		assert: Discussion points :
+		1. Having Sleep durations inside a test is a bad thing. consider tens of tests that sleep and have a very long running test suite -
+		while a major Unit Test's forte is it's fastness.
+		2. Alot of methods don't have return values, but their calculation still need to be verified - the {@link Mockito#verify} method to the rescue.
+		3. Notice the importance of encapsulation - the Arithmetics class doesn't know or care about how the listener is implemented, so the correctness of
+		 of Arithmetics has nothing to do with the listener (This is how we gain great code by aiming for testability, even without writing the tests themselves.
+
+		Side note: This separation of concerns can't happen when using inheritance: inheritance means each inheriting class's correctness depends on it's parent correctness -
+		  Hence each piece inheriting code is born with a hunchback - it's never independent.
+		   Whenever possible, when aiming for Unit Tests, try to avoid inheritance, and use composition (a reference to the common behaviour) instead.
+		 */
+
+
+		Thread.sleep(20);										// once again - SEE THE TEST FAIL!
+		Mockito.verify(listener, Mockito.times(1)).onSlowAddCompleted(1);
+	}
 }
