@@ -7,6 +7,13 @@ import android.widget.EditText;
 /**
  * Click listener that calls arithmetics for multiply
  */
+/*
+	Notice:
+	1. Private/anonymous classes, as "natural" as may be, are evil in the sense of dependencies - an inner class has access to much more
+	dependencies then it should have (everything in the containing class - somewhat like inheritance - you get everything, no questions asked).
+	2. Extracting inner classes to new files usually exposes the real set of dependencies. It's painful at start - but the result is much more
+	"clean" (IMO)
+ */
 class MultiplyClickListener implements View.OnClickListener {
 
 	private final EditText number1;
@@ -31,6 +38,11 @@ class MultiplyClickListener implements View.OnClickListener {
 		}
 	}
 
+	/*
+	Note -
+	1. this class's behavior is alot Android. Recall that we strive to separate our code and behavior from external factor.
+	 How would you separate our code from Android's?
+	 */
 	private boolean validInput(EditText number_1, EditText number_2) {
 		return !TextUtils.isEmpty(number_1.toString()) &&
 				!TextUtils.isEmpty(number_2.toString());
