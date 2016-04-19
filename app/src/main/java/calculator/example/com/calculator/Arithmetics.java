@@ -6,23 +6,19 @@ package calculator.example.com.calculator;
 public class Arithmetics implements IArithmetics {
 
 	private final IArithmeticsListener listener;
-	private final long sleepDuration;
+	private final long sleepTimeout;
+	private final IAddImplSelector implSelector;
 
-	public Arithmetics(IArithmeticsListener listener) {
+	public Arithmetics(IArithmeticsListener listener, IAddImplSelector implSelector) {
 		this.listener = listener;
-		this.sleepDuration = 2000;
+		this.sleepTimeout = 2000;
+		this.implSelector = implSelector;
 	}
 
-	/*
-	Notice: this is a private (Package protected). We don't want to use it elsewhere, other then the tests.
-	Some points for discussion:
-	1. Is this meaning altering the code's behaviour?
-	2. What else can be done to minimize the pain with async code testing? (Hint : another class extraction)
-	 */
-
-	Arithmetics(IArithmeticsListener listener, long sleepDuration) {
+	Arithmetics(IArithmeticsListener listener, long sleepTimout, IAddImplSelector implSelector) {
 		this.listener = listener;
-		this.sleepDuration = sleepDuration;
+		this.sleepTimeout = sleepTimout;
+		this.implSelector = implSelector;
 	}
 
 	public int multiply(int num1, int num2) {
@@ -34,13 +30,13 @@ public class Arithmetics implements IArithmetics {
 			@Override
 			public void run() {
 				try {
-					sleep(sleepDuration);
+					sleep(sleepTimeout);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 
 				// the long calculation is done on the worker thread.
-				final int sum = num1 + num2;
+				final int sum = implSelector.performAdd() ? num1 + num2 : num1 - num2;
 				listener.onSlowAddCompleted(sum);
 			}
 		}.start();
