@@ -40,6 +40,6 @@ public class MultiplyClickListenerTest {
         Mockito.verify(arithmetics,  Mockito.times(1)).multiply(Mockito.anyInt(), Mockito.anyInt());
 
         //assert - the result is set with whatever arithmetics returns
-        Mockito.verify(result, Mockito.times(1)).setText(String.valueOf(0));
+        Mockito.verify(result, Mockito.times(1)).setText(String.valueOf(PRODUCT));
     }
 }
